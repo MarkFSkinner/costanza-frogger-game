@@ -54,13 +54,12 @@ canvas {
 
 #stats {
 	position: absolute;
-	margin-top: -76px;
+	margin-top: -59px;
 	z-index: 1;
 	color: white;
 	font-weight: bold;
 	width: 100%;
 	max-width: 550px;
-	font-size: 25px;
 }
 
 #stats h2 {
@@ -79,22 +78,26 @@ canvas {
 
 #lives h2 {
 	font-size: 1.25em;
-	margin-top: 15px;
+	/*margin-top: 0px;*/
 }
 
 #level {
-	padding-left: 33px;
+	padding-left: 48px;
+	padding-right: 0px;
 }
 
 #level h2 {
 	text-align: left;
-	margin-left: 10px;
+}
+
+#score {
+	padding-left: 0px;
+	padding-right: 48px;
 }
 
 #score h2 {
 	text-align: right;
 	margin-left: 20px;
-	padding-right: 30px;
 }
 
 .heart img {
@@ -104,8 +107,8 @@ canvas {
 
 #time {
 	position: absolute;
-	margin-top: -535px;
-	padding-left: 30px;
+	margin-top: -518px;
+	padding-left: 33px;
 	z-index: 1;
 	color: white;
 	font-weight: bold;
@@ -115,7 +118,7 @@ canvas {
 #time h2 {
 	text-align: left;
 	font-weight: bold;
-	font-size: 2.75rem;
+	font-size: 2rem;
 }
 
 @-webkit-keyframes glowing {
@@ -143,7 +146,6 @@ canvas {
 }
 
 #sound-container {
-	margin-top: 10px;
 	z-index: 2;
 }
 
@@ -160,14 +162,14 @@ canvas {
 
 #left, #right {
 	position: relative;
-	top: -20px;
+	top: -31px;
 }
 
 
 @media screen and (max-width: 500px) {
 	#high-score h2 {
   	font-size: 1em;
-  	margin-top: 15px;
+  	/*margin-top: 15px;*/
 	}
 
 	#lives h2 {
@@ -180,19 +182,24 @@ canvas {
 	}
 
 	#sound-container {
-    margin-top: 4px;
+    margin-top: -9px;
 	}
 
 	#stats {
-    margin-top: -61px;
+    margin-top: -42px;
 	}
 
 	#stats h2 {
-		font-size: 20px;
+		font-size: 1rem;
+	}
+
+	#level {
+		padding-left: 40px;
 	}
 
 	#score {
 		padding-left: 0px;
+    padding-right: 40px;
 	}
 }
 
@@ -206,12 +213,12 @@ canvas {
 	}
 
 	#time {
-		margin-top: -97%;
+		margin-top: -92%;
 		padding-left: 6%;
 	}
 
 	#time h2 {
-		font-size: 2.25rem;
+		font-size: 1.5rem;
 	}
 }
 
@@ -221,4 +228,15 @@ canvas {
 
 #game-over {
 	font-size: 1.5rem;
+}
+
+.hidden {
+	display: none;
+}
+
+
+
+#info {
+	padding-top: 20px;
+	padding-bottom: 10px;
 }
