@@ -2,7 +2,6 @@ var countdown;
 var timer;
 var timeNow;
 
-
 var kills = 0;
 var score = 0;
 var level = 1;
@@ -109,7 +108,6 @@ Player.prototype.update = function() {
         this.winCount += 1;
         if (this.winCount % 3 === 0) {
             //Play Summer of George Audio
-            //console.log("muted is " + muted);
             game.sounds[3].currentTime = 2;
             game.controlSounds(3);
         }
@@ -355,7 +353,7 @@ $("#lose").click(function() {
 
 
 //Clicking the Start Game button
-$("#start-game").click(function() {
+$("#start-btn").click(function() {
     game.currentState = states.running;
     $('#start-game').addClass('hidden');
     game.sounds[5].play();
@@ -367,7 +365,7 @@ $("#start-game").click(function() {
 $(document).keyup(function(event){
     if (game.currentState === states.stopped) {
         if(event.keyCode == 13){
-            $('#start-game').click();
+            $('#start-btn').click();
             event.preventDefault();
         }
     }
@@ -511,7 +509,6 @@ Game.prototype.killed = function() {
         $('#second-kill').addClass('hidden');
         $('#third-kill').addClass('hidden');
         //Play George Upset Audio
-        console.log("muted is " + muted);
         game.controlSounds(0);
     }
     else if (kills === 2) {
@@ -519,7 +516,6 @@ Game.prototype.killed = function() {
         $('#first-kill').addClass('hidden');
         $('#second-kill').removeClass('hidden');
         //Play Independent Geroge Audio
-        console.log("muted is " + muted);
         game.controlSounds(1);
     } else {
         $('#heart1').addClass('hidden');
@@ -528,14 +524,8 @@ Game.prototype.killed = function() {
         //Pause Seinfeld Theme Audio
         game.sounds[5].pause();
         //Play Geroge Divided Audio
-        //this.sounds[2].currentTime = 27;
-        //this.controlSounds(2);
-
-        console.log("muted is " + muted);
         game.sounds[2].currentTime = 27;
         game.controlSounds(2);
-        console.log("muted is " + muted);
-
         //Play Game Over Audio after George Divided Ends
         setTimeout(function(){ endAudio() }, 4500);
         function endAudio() {
@@ -547,14 +537,10 @@ Game.prototype.killed = function() {
 
 
 Game.prototype.controlSounds = function(n) {
-    console.log(n + " is " + muted);
     if (muted === true) {
-        console.log(n + " don't play " + muted);
         return;
     }
     else {
-        console.log(n + " play " + muted);
-    //if (muted === false) {
         this.sounds[n].play();
     }
 }

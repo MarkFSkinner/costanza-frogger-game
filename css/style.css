@@ -1,147 +1,122 @@
+html {
+	max-width: 550px;
+	margin: auto;
+}
 body {
     text-align: center;
 }
 
 .container {
 	max-width: 550px;
-	/*border: 1px dotted red;*/
 }
-
-#win {
-	position: absolute;
-	/*margin-top: -383px;*/
-	margin-top: -400px;
-	margin-left: 10px;
-	z-index: 2;
-	width: 480px;
-	/*height: 200px;*/
-}
-
-#lose {
-	position: absolute;
-	/*margin-top: -383px;*/
-	margin-top: -575px;
-	margin-left: 10px;
-	z-index: 2;
-	/*width: 400px;
-	height: 200px;*/
-}
-
-#start-game {
-	position: absolute;
-	/*margin-top: -383px;*/
-	margin-top: -400px;
-	margin-left: 75px;
-	z-index: 2;
-}
-
-#lose button, #win button {
-	font-size: 2em;
-	width: 480px;
-	/*height: 150px;*/
-	white-space: normal;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-#start-game button {
-	font-size: 2.5em;
-	width: 350px;
-	/*height: 150px;*/
-	white-space: normal;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-/*.button-text {
-	width: 490px;
-}*/
 
 canvas {
 	position: relative;
 	margin-top: -40px;
+	width: 90%;
+	max-width: 505px;
 }
 
+#start-game, #win, #lose {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 2;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
 
-/*#restart {
-	margin-top: -625px;
-}*/
+#start-game, #win {
+	margin-top: -350px;
+}
+
+#lose {
+	margin-top: -523px;
+}
+
+#start-btn, #win-btn, #lose-btn {
+	font-size: 1.5em;
+	max-width: 350px;
+	white-space: normal;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin: auto;
+	width: 90%;
+}
+
+#start-btn {
+  -webkit-animation: glowing 1500ms infinite;
+  -moz-animation: glowing 1500ms infinite;
+  -o-animation: glowing 1500ms infinite;
+  animation: glowing 1500ms infinite;
+}
 
 #stats {
 	position: absolute;
-	/*margin-top: -383px;*/
-
-	margin-top: -85px;
-
-	/*margin-left: 722px;
-	margin-left: 100px;*/
+	margin-top: -76px;
 	z-index: 1;
 	color: white;
 	font-weight: bold;
-	width: 550px;
-	/*border: 1px dotted black;*/
+	width: 100%;
+	max-width: 550px;
+	font-size: 25px;
+}
+
+#stats h2 {
+	font-size: 25px;
+}
+
+#high-score {
+	padding-left: 30px;
+	padding-right: 0px;
 }
 
 #high-score h2 {
-	/*margin-left: 0px;*/
-	/*border: 1px dotted green;*/
 	text-align: left;
-	font-size: 1.5em;
+	font-size: 1.25em;
 }
 
 #lives h2 {
-	/*margin-left: 0px;*/
-	/*border: 1px dotted green;*/
-	font-size: 1.5em;
+	font-size: 1.25em;
 	margin-top: 15px;
+}
+
+#level {
+	padding-left: 33px;
 }
 
 #level h2 {
 	text-align: left;
 	margin-left: 10px;
-	/*color: black;*/
-	/*border: 1px dotted blue;*/
 }
 
 #score h2 {
-	text-align: left;
+	text-align: right;
 	margin-left: 20px;
-	/*color: black;*/
-	/*border: 1px dotted blue;*/
+	padding-right: 30px;
 }
 
 .heart img {
-	width: 30px;
+	width: 25px;
 	margin-top: -12px;
 }
 
 #time {
 	position: absolute;
-	/*margin-top: -383px;*/
-
-	margin-top: -575px;
-
-	/*margin-left: 722px;
-	margin-left: 100px;*/
+	margin-top: -535px;
+	padding-left: 30px;
 	z-index: 1;
 	color: white;
 	font-weight: bold;
 	width: 250px;
-	/*border: 1px dotted black;*/
 }
 
 #time h2 {
 	text-align: left;
-	margin-left: 2px;
 	font-weight: bold;
-	/*color: #5cb85c;*/
-	/*color: #4cae4c;*/
-	/*color: #B20000;
-	color: #FF0000;*/
-	/*border: 1px dotted white;*/
+	font-size: 2.75rem;
 }
-
-/**/
 
 @-webkit-keyframes glowing {
   0% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
@@ -167,18 +142,10 @@ canvas {
   100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
 }
 
-#start-game {
-  -webkit-animation: glowing 1500ms infinite;
-  -moz-animation: glowing 1500ms infinite;
-  -o-animation: glowing 1500ms infinite;
-  animation: glowing 1500ms infinite;
+#sound-container {
+	margin-top: 10px;
+	z-index: 2;
 }
-
-
-#mute, #unmute {
-	margin-top: 9px;
-}
-
 
 #up-btn, #down-btn {
 	display: block;
@@ -187,11 +154,66 @@ canvas {
 	margin-bottom: 5px;
 }
 
-#controls {
-	width: 400px;
-	margin: auto;
-}
-
 #left, #right, #center {
 	display: inline-block;
+}
+
+
+@media screen and (max-width: 500px) {
+	#high-score h2 {
+  	font-size: 1em;
+  	margin-top: 15px;
+	}
+
+	#lives h2 {
+		font-size: 1rem;
+	}
+
+	.heart img {
+    width: 15px;
+    margin-top: -4px;
+	}
+
+	#sound-container {
+    margin-top: 4px;
+	}
+
+	#stats {
+    margin-top: -61px;
+	}
+
+	#stats h2 {
+		font-size: 20px;
+	}
+
+	#score {
+		padding-left: 0px;
+	}
+}
+
+@media screen and (max-width: 567px) {
+	#start-game, #win {
+		margin-top: -63.5%;
+	}
+
+	#lose {
+		margin-top: -95%;
+	}
+
+	#time {
+		margin-top: -97%;
+		padding-left: 6%;
+	}
+
+	#time h2 {
+		font-size: 2.25rem;
+	}
+}
+
+#third-kill {
+	font-size: 1rem;
+}
+
+#game-over {
+	font-size: 1.5rem;
 }
