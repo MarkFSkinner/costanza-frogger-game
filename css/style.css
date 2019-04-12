@@ -1,3 +1,197 @@
 body {
     text-align: center;
 }
+
+.container {
+	max-width: 550px;
+	/*border: 1px dotted red;*/
+}
+
+#win {
+	position: absolute;
+	/*margin-top: -383px;*/
+	margin-top: -400px;
+	margin-left: 10px;
+	z-index: 2;
+	width: 480px;
+	/*height: 200px;*/
+}
+
+#lose {
+	position: absolute;
+	/*margin-top: -383px;*/
+	margin-top: -575px;
+	margin-left: 10px;
+	z-index: 2;
+	/*width: 400px;
+	height: 200px;*/
+}
+
+#start-game {
+	position: absolute;
+	/*margin-top: -383px;*/
+	margin-top: -400px;
+	margin-left: 75px;
+	z-index: 2;
+}
+
+#lose button, #win button {
+	font-size: 2em;
+	width: 480px;
+	/*height: 150px;*/
+	white-space: normal;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#start-game button {
+	font-size: 2.5em;
+	width: 350px;
+	/*height: 150px;*/
+	white-space: normal;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/*.button-text {
+	width: 490px;
+}*/
+
+canvas {
+	position: relative;
+	margin-top: -40px;
+}
+
+
+/*#restart {
+	margin-top: -625px;
+}*/
+
+#stats {
+	position: absolute;
+	/*margin-top: -383px;*/
+
+	margin-top: -85px;
+
+	/*margin-left: 722px;
+	margin-left: 100px;*/
+	z-index: 1;
+	color: white;
+	font-weight: bold;
+	width: 550px;
+	/*border: 1px dotted black;*/
+}
+
+#high-score h2 {
+	/*margin-left: 0px;*/
+	/*border: 1px dotted green;*/
+	text-align: left;
+	font-size: 1.5em;
+}
+
+#lives h2 {
+	/*margin-left: 0px;*/
+	/*border: 1px dotted green;*/
+	font-size: 1.5em;
+	margin-top: 15px;
+}
+
+#level h2 {
+	text-align: left;
+	margin-left: 10px;
+	/*color: black;*/
+	/*border: 1px dotted blue;*/
+}
+
+#score h2 {
+	text-align: left;
+	margin-left: 20px;
+	/*color: black;*/
+	/*border: 1px dotted blue;*/
+}
+
+.heart img {
+	width: 30px;
+	margin-top: -12px;
+}
+
+#time {
+	position: absolute;
+	/*margin-top: -383px;*/
+
+	margin-top: -575px;
+
+	/*margin-left: 722px;
+	margin-left: 100px;*/
+	z-index: 1;
+	color: white;
+	font-weight: bold;
+	width: 250px;
+	/*border: 1px dotted black;*/
+}
+
+#time h2 {
+	text-align: left;
+	margin-left: 2px;
+	font-weight: bold;
+	/*color: #5cb85c;*/
+	/*color: #4cae4c;*/
+	/*color: #B20000;
+	color: #FF0000;*/
+	/*border: 1px dotted white;*/
+}
+
+/**/
+
+@-webkit-keyframes glowing {
+  0% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; -webkit-box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
+}
+
+@-moz-keyframes glowing {
+  0% { background-color: #5cb85c; -moz-box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; -moz-box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; -moz-box-shadow: 0 0 3px #5cb85c; }
+}
+
+@-o-keyframes glowing {
+  0% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
+}
+
+@keyframes glowing {
+  0% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
+}
+
+#start-game {
+  -webkit-animation: glowing 1500ms infinite;
+  -moz-animation: glowing 1500ms infinite;
+  -o-animation: glowing 1500ms infinite;
+  animation: glowing 1500ms infinite;
+}
+
+
+#mute, #unmute {
+	margin-top: 9px;
+}
+
+
+#up-btn, #down-btn {
+	display: block;
+	margin: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#controls {
+	width: 400px;
+	margin: auto;
+}
+
+#left, #right, #center {
+	display: inline-block;
+}

@@ -1,13 +1,78 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
-</body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Costanza Frogger</title>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row" id="info">
+                <div id="high-score" class="col-xs-6">
+                    <h2>HIGH-SCORE: <span class="high-score-num"></span></h2>
+                </div>
+                <div id="lives" class="col-xs-6">
+                    <div id="mute" class="col-xs-2">
+                        <a href="#" id="mute" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-volume-up"></span> </a>
+                    </div>
+                    <div id="unmute" class="col-xs-2 hidden">
+                        <a href="#" id="unmute" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-volume-off"></span> </a>
+                    </div>
+                    <div class="col-xs-10">
+                        <h2>LIVES: <span class="heart" id="heart1"><img src="images/Heart.png"></span><span class="heart" id="heart2"><img src="images/Heart.png"></span><span class="heart" id="heart3"><img src="images/Heart.png"></span></h2>
+                    </div>
+                </div>
+            </div>
+            <!--<div id="restart">
+                <h1>PRESS ENTER TO RESTART</h1>
+            </div>-->
+
+            <div id="start-game">
+                <button type="button" class="btn btn-success btn-lg">PRESS ENTER TO START GAME!</button>
+            </div>
+        	<div id="win" class="hidden">
+        		<button type="button" class="btn btn-success btn-lg">IT'S THE SUMMER OF GEORGE!!!! YOU WIN!</button>
+        	</div>
+        	<div id="lose" class="hidden">
+        		<button type="button" class="btn btn-danger btn-lg">
+                    <span class="button-text" id="first-kill">GEORGE IS GETTIN' UPSET!</span>
+                    <span class="button-text" id="second-kill">YOU'RE KILLING INDEPENDENT GEORGE!!!!</span>
+                    <span class="button-text" id="third-kill">A GEORGE DIVIDED AGAINST ITSELF CANNOT STAND!!!!!!!!! GAME OVER!</span>
+                </button>
+        	</div>
+            <div id="time">
+                <h2>Time Left: <span class="time-num"></span></h2>
+            </div>
+            <div class="row" id="stats">
+                <div id="level" class="col-xs-6">
+                    <h2>LEVEL: <span class="level-num"></span></h2>
+                </div>
+                <div id="score" class="col-xs-6">
+                    <h2>SCORE: <span class="score-num"></span></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="controls">
+                        <div id="left">
+                            <button id="left-btn" class="btn btn-primary">L</button>
+                        </div>
+                        <div id="center">
+                            <button id="up-btn" class="btn btn-primary">U</button>
+                            <button id="down-btn" class="btn btn-primary">D</button>
+                        </div>
+                        <div id="right">
+                            <button id="right-btn" class="btn btn-primary">R</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="js/resources.js"></script>
+        <script src="js/app_costanza.js"></script>
+        <script src="js/engine_alt.js"></script>
+    </body>
 </html>
