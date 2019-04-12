@@ -158,6 +158,11 @@ canvas {
 	display: inline-block;
 }
 
+#left, #right {
+	position: relative;
+	top: -20px;
+}
+
 
 @media screen and (max-width: 500px) {
 	#high-score h2 {
