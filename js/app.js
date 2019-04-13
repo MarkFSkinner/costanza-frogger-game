@@ -273,7 +273,7 @@ var Game = function() {
         new Audio("https://www.drodd.com/seinfeld-audio/independent.mp3"),
         new Audio("https://www.drodd.com/seinfeld-audio/worlds.mp3"),
         new Audio("https://www.drodd.com/seinfeld-audio/sumrgrge.wav"),
-        new Audio("audio/frogger.mp3"),
+        new Audio("https://www.drodd.com/seinfeld-audio/shame.mp3"),
         new Audio("http://www.televisiontunes.com/uploads/audio/Seinfeld.mp3"),
         new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_coin.wav"),
         new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_1-up.wav"),
@@ -526,15 +526,20 @@ Game.prototype.killed = function() {
         //Play Geroge Divided Audio
         game.sounds[2].currentTime = 27;
         game.controlSounds(2);
-        //Play Game Over Audio after George Divided Ends
-        setTimeout(function(){ endAudio() }, 4500);
-        function endAudio() {
-            game.sounds[4].currentTime = 108;
+        //Play Shame Audio after George Divided Ends
+        setTimeout(function(){ endDividedAudio() }, 4250);
+        function endDividedAudio() {
+            game.sounds[4].currentTime = 19.5;
             game.controlSounds(4);
+        }
+        //Play End Theme Audio after Shame Ends
+        setTimeout(function(){ endShameAudio() }, 5750);
+        function endShameAudio() {
+            game.sounds[5].currentTime = 45.5;
+            game.controlSounds(5);
         }
     }
 }
-
 
 Game.prototype.controlSounds = function(n) {
     if (muted === true) {
