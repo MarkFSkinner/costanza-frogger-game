@@ -43,6 +43,7 @@ canvas {
 	padding-right: 10px;
 	margin: auto;
 	width: 90%;
+	cursor: pointer;
 }
 
 #start-btn {
