@@ -32,7 +32,7 @@ canvas {
 }
 
 #lose {
-	margin-top: -523px;
+	margin-top: -200px;
 }
 
 #start-btn, #win-btn, #lose-btn {
@@ -78,7 +78,6 @@ canvas {
 
 #lives h2 {
 	font-size: 1.25em;
-	/*margin-top: 0px;*/
 }
 
 #level {
@@ -169,7 +168,6 @@ canvas {
 @media screen and (max-width: 500px) {
 	#high-score h2 {
   	font-size: 1em;
-  	/*margin-top: 15px;*/
 	}
 
 	#lives h2 {
@@ -210,6 +208,14 @@ canvas {
 
 	#lose {
 		margin-top: -95%;
+	}
+
+	#lose-btn {
+		font-size: 1.25rem;
+	}
+
+	#game-over {
+		font-size:
 	}
 
 	#time {
