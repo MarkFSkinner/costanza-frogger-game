@@ -186,7 +186,7 @@ var Engine = (function(global) {
         'images/Gem Green.png',
         'images/Star.png',
         'images/george_hair.png',
-        'images/george_hair_shine.png'
+        'images/george_hair_glow.png'
     ]);
     Resources.onReady(init);
 

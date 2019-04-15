@@ -13,6 +13,8 @@ var muted = false;
 var invincible = false;
 var themePaused = false;
 var hit = false;
+var initiateStarPower = true;
+var starInterval;
 
 
 
@@ -123,7 +125,11 @@ Player.prototype.update = function() {
             themePaused = false;
         }
         //End star power when player reaches the top
-        invincible = false;
+        if (invincible) {
+            invincible = false;
+            initiateStarPower = true;
+            clearInterval(starInterval);
+        }
     }
     this.checkCollison();
 }
@@ -310,7 +316,10 @@ Game.prototype.reset = function() {
     }
     var timeText = this.startTime.toString();
     $('.time-num').text(timeText);
-    invincible = false;
+    if (invincible) {
+        invincible = false;
+        initiateStarPower = true;
+    }
     if (themePaused === true) {
         //Pause Star Power Audio
         game.sounds[10].pause();
@@ -422,7 +431,7 @@ Game.prototype.update = function() {
                 invincible = true;
                 //Play Power Up Audio
                 game.controlSounds(9);
-                player.sprite = 'images/george_hair_shine.png';
+                player.sprite = 'images/george_hair_glow.png';
                 //Play Star Power Audio
                 game.sounds[10].currentTime = 38;
                 game.sounds[10].volume = 0.5;
@@ -462,11 +471,17 @@ Game.prototype.update = function() {
         }
     }
     //Make Invincible George flash every 1 second
-    if (player.sprite === 'images/george_hair_shine.png' && timeNow % 2 === 0) {
-        player.sprite = 'images/george_hair.png';
-    }
-    else if (player.sprite === 'images/george_hair.png' && timeNow % 2 !== 0) {
-        player.sprite = 'images/george_hair_shine.png';
+    if (initiateStarPower && invincible) {
+        initiateStarPower = false;
+        starInterval = window.setInterval(switchImage, 300);
+        function switchImage() {
+            if (player.sprite === 'images/george_hair_glow.png') {
+                player.sprite = 'images/george_hair.png';
+            }
+            else if (player.sprite === 'images/george_hair.png') {
+                player.sprite = 'images/george_hair_glow.png';
+            }
+        }
     }
 }
 
@@ -497,6 +512,7 @@ Game.prototype.updateTime = function() {
 
 Game.prototype.killed = function() {
     clearInterval(timer);
+    clearInterval(starInterval);
     allEnemies.forEach(function(enemy) {
         enemy.speed = 0;
     })
