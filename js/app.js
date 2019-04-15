@@ -336,14 +336,14 @@ Game.prototype.reset = function() {
 $(document).keyup(function(event){
     if (game.currentState === states.stopped) {
         if(event.keyCode == 13){
-            $(game.currentButton).click();
+            $(game.currentButton + '-btn').click();
             event.preventDefault();
         }
     }
 });
 
 //Clicking the Win button
-$("#win").click(function() {
+$("#win-btn").click(function() {
     game.reset();
     $('#win').addClass('hidden')
 });
