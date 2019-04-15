@@ -1,25 +1,30 @@
-var countdown;
-var timer;
-var timeNow;
-
-var kills = 0;
-var score = 0;
-var level = 1;
-var highScore = 0;
-var killBonus = 0;
-
-var win = false;
-var muted = false;
-var invincible = false;
-var themePaused = false;
-var hit = false;
-var initiateStarPower = true;
-var starInterval;
-
-
+const state = {
+    started: false,
+    countdown: undefined,
+    timer: undefined,
+    timeNow: undefined,
+    kills: 0,
+    score: 0,
+    level: 1,
+    highScore: 0,
+    killBonus: 0,
+    win: false,
+    muted: false,
+    invincible: false,
+    themePaused: false,
+    hit: false,
+    initiateStarPower: true,
+    starInterval: undefined,
+    running: 0,
+    stopped: 1,
+    moveLeft: true,
+    moveRight: true,
+    moveUp: true,
+    moveDown: true
+}
 
 // Enemies our player must avoid
-var Enemy = function() {
+const Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -36,7 +41,6 @@ var Enemy = function() {
     this.reset();
 };
 
-
 Enemy.prototype.reset = function() {
     this.x = this.x_pos[0];
     this.y = this.getRandom(this.y_pos);
@@ -44,17 +48,16 @@ Enemy.prototype.reset = function() {
     this.speed = this.getRandomSpeed();
 }
 
-
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (game.currentState !== states.running) {
+    if (game.currentState !== state.running) {
         return;
     }
-    var max_pos = this.x_pos[1];
+    let max_pos = this.x_pos[1];
     this.x += this.speed * dt;
 
     if (this.x > max_pos) {
@@ -62,31 +65,28 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.image), this.x, this.y);
 };
 
-Enemy.prototype.getRandom = function (thing) {
-    return thing[Math.floor(Math.random() * thing.length)];
+Enemy.prototype.getRandom = function(item) {
+    return item[Math.floor(Math.random() * item.length)];
 }
 
 Enemy.prototype.getRandomSpeed = function() {
-    var minSpeed = this.speedRange[0],
-        maxSpeed = this.speedRange[1];
+    let minSpeed = this.speedRange[0];
+    let maxSpeed = this.speedRange[1];
     return Math.floor(Math.random() * (maxSpeed - minSpeed)) + minSpeed;
 }
-
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function() {
+const Player = function() {
     this.reset();
     this.winCount = 2;
 }
-
 
 Player.prototype.reset = function() {
     this.x = 220;
@@ -94,10 +94,9 @@ Player.prototype.reset = function() {
     this.sprite = 'images/costanza.png';
 }
 
-
 Player.prototype.update = function() {
     //Freeze player when game is stopped
-    if (game.currentState !== states.running) {
+    if (game.currentState !== state.running) {
         return;
     }
     //What to do when player reaches the top
@@ -113,44 +112,43 @@ Player.prototype.update = function() {
             game.sounds[3].currentTime = 2;
             game.controlSounds(3);
         }
-        win = true;
+        state.win = true;
         //Reset timer
-        clearInterval(timer);
-        if (themePaused === true) {
+        clearInterval(state.timer);
+        if (state.themePaused) {
             //Pause Star Power Audio
             game.sounds[10].pause();
             //Play Seinfeld Theme
             game.sounds[5].currentTime = 0;
             game.controlSounds(5);
-            themePaused = false;
+            state.themePaused = false;
         }
         //End star power when player reaches the top
-        if (invincible) {
-            invincible = false;
-            initiateStarPower = true;
-            clearInterval(starInterval);
+        if (state.invincible) {
+            state.invincible = false;
+            state.initiateStarPower = true;
+            clearInterval(state.starInterval);
         }
     }
     this.checkCollison();
 }
 
-
 Player.prototype.checkCollison = function() {
-    killBonus = 0;
-    for (i = 0; i < allEnemies.length; i++) {
+    state.killBonus = 0;
+    for (let i = 0; i < allEnemies.length; i++) {
         enemy = allEnemies[i];
         if (enemy.y === (player.y - 8)) {
             if (enemy.x >= player.x - 75 && enemy.x <= player.x + 75) {
-                if(invincible === true) {
+                if(state.invincible) {
                     enemy.x = enemy.x_pos[1];
-                    killBonus = 20;
-                    score += killBonus;
+                    state.killBonus = 20;
+                    state.score += state.killBonus;
                     game.renderScore();
                     //Play enemy kill audio
                     game.controlSounds(11);
                 }
                 else {
-                    hit = true;
+                    state.hit = true;
                     game.killed();
                 }
                 //End loop after one enemy is hit
@@ -160,79 +158,70 @@ Player.prototype.checkCollison = function() {
     }
 }
 
-
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-
-var moveLeft = true;
-var moveRight = true;
-var moveUp = true;
-var moveDown = true;
-
 Player.prototype.handleInput = function(key) {
-    if (game.currentState === states.running) {
+    if (game.currentState === state.running) {
         if (key === 'left' && this.x > 50) {
-            this.checkMove();
-            if (moveLeft === true) {
+            this.checkForRock();
+            if (state.moveLeft) {
                 this.x -= 100;
-                moveRight = true;
-                moveUp = true;
-                moveDown = true;
+                state.moveRight = true;
+                state.moveUp = true;
+                state.moveDown = true;
             }
         } else if (key === 'right' && this.x < 400) {
-            this.checkMove();
-            if (moveRight === true) {
+            this.checkForRock();
+            if (state.moveRight) {
                 this.x += 100;
-                moveLeft = true;
-                moveUp = true;
-                moveDown = true;
+                state.moveLeft = true;
+                state.moveUp = true;
+                state.moveDown = true;
             }
         } else if (key === 'up' && this.y > 100) {
-            this.checkMove();
-            if (moveUp === true) {
+            this.checkForRock();
+            if (state.moveUp) {
                 this.y -= 83;
-                moveLeft = true;
-                moveRight = true;
-                moveDown = true;
+                state.moveLeft = true;
+                state.moveRight = true;
+                state.moveDown = true;
             }
         } else if (key === 'down' && this.y < 400) {
-            this.checkMove();
-            if (moveDown === true) {
+            this.checkForRock();
+            if (state.moveDown) {
                 this.y += 83;
-                moveLeft = true;
-                moveRight = true;
-                moveUp = true;
+                state.moveLeft = true;
+                state.moveRight = true;
+                state.moveUp = true;
             }
         }
     }
 }
 
-Player.prototype.checkMove = function() {
+Player.prototype.checkForRock = function() {
     if (gem.image === 'images/Rock.png') {
         if (gem.y === this.y - 68) {
-            if (gem.x === this.x - 119){
-            return moveLeft = false;
+            if (gem.x === this.x - 119) {
+                state.moveLeft = false;
             }
             else if (gem.x === this.x + 81) {
-                return moveRight = false;
+                state.moveRight = false;
             }
         }
         else if (gem.x === this.x - 19){
             if (gem.y === this.y - 151) {
-                return moveUp = false;
+                state.moveUp = false;
             }
             else if (gem.y === this.y + 15) {
-                return moveDown = false;
+                state.moveDown = false;
             }
         }
     }
 }
 
-
-
-var Gems = function() {
+const Gems = function() {
     this.sprite = [
         'images/Heart.png',
         'images/Rock.png',
@@ -245,50 +234,41 @@ var Gems = function() {
     this.reset();
 }
 
-
 Gems.prototype.reset = function() {
     this.x = this.getRandom(this.x_pos);
     this.y = this.getRandom(this.y_pos);
     this.image = this.getRandom(this.sprite);
 }
 
-Gems.prototype.getRandom = function (thing) {
-    return thing[Math.floor(Math.random() * thing.length)];
+Gems.prototype.getRandom = function (item) {
+    return item[Math.floor(Math.random() * item.length)];
 }
 
 Gems.prototype.render = function() {
-    if (game.currentState !== states.running) {
+    if (game.currentState !== state.running) {
         return;
     }
     ctx.drawImage(Resources.get(this.image), this.x, this.y);
 }
 
-
-
-var states = {
-    running: 0,
-    stopped: 1
-}
-
-var Game = function() {
-    this.currentState = states.stopped;
-    this.currentButton = "";
+const Game = function() {
+    this.currentState = state.stopped;
+    this.currentButton = '';
     this.startTime = 20;
     this.sounds = [
-        new Audio("https://www.drodd.com/seinfeld-audio/upset.wav"),
-        new Audio("https://www.drodd.com/seinfeld-audio/independent.mp3"),
-        new Audio("https://www.drodd.com/seinfeld-audio/worlds.mp3"),
-        new Audio("https://www.drodd.com/seinfeld-audio/sumrgrge.wav"),
-        new Audio("https://www.drodd.com/seinfeld-audio/shame.mp3"),
-        new Audio("http://www.televisiontunes.com/uploads/audio/Seinfeld.mp3"),
-        new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_coin.wav"),
-        new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_1-up.wav"),
-        new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_warning.wav"),
-        new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_powerup.wav"),
-        new Audio("http://www.gamethemesongs.com/uploads/audio/Super%20Mario%20Kart%20-%20Star%20Power.mp3"),
-        new Audio("http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_kick.wav")
+        new Audio('https://www.drodd.com/seinfeld-audio/upset.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/independent.mp3'),
+        new Audio('https://www.drodd.com/seinfeld-audio/worlds.mp3'),
+        new Audio('https://www.drodd.com/seinfeld-audio/sumrgrge.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/shame.mp3'),
+        new Audio('http://www.televisiontunes.com/uploads/audio/Seinfeld.mp3'),
+        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_coin.wav'),
+        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_1-up.wav'),
+        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_warning.wav'),
+        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_powerup.wav'),
+        new Audio('http://www.gamethemesongs.com/uploads/audio/Super%20Mario%20Kart%20-%20Star%20Power.mp3'),
+        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_kick.wav')
     ];
-
     //Replay Seinfeld Theme when ended
     this.sounds[5].addEventListener('ended', function() {
         this.currentTime = 0;
@@ -297,114 +277,62 @@ var Game = function() {
     this.sounds[5].play();
 }
 
-
 Game.prototype.reset = function() {
-    countdown = true;
+    state.countdown = true;
     player.reset();
     allEnemies.forEach(function(enemy) {
         enemy.reset();
     })
     gem.reset();
-    this.currentState = states.running;
+    this.currentState = state.running;
     this.renderScore();
     this.updateTime();
-    if (kills === 0) {
+    if (state.kills === 0) {
         $('#heart3').removeClass('hidden');
         $('#heart2').removeClass('hidden');
         $('#heart1').removeClass('hidden');
         $('#first-kill').removeClass('hidden');
     }
-    var timeText = this.startTime.toString();
+    let timeText = this.startTime.toString();
     $('.time-num').text(timeText);
-    if (invincible) {
-        invincible = false;
-        initiateStarPower = true;
+    if (state.invincible) {
+        state.invincible = false;
+        state.initiateStarPower = true;
     }
-    if (themePaused === true) {
+    if (state.themePaused) {
         //Pause Star Power Audio
         game.sounds[10].pause();
         //Play Seinfeld Theme from the beginning
         game.sounds[5].currentTime = 0;
         game.controlSounds(5);
-        themePaused = false;
+        state.themePaused = false;
     }
-    hit = false;
+    state.hit = false;
 }
 
-
-//Press Enter to activate Win/Lose buttons
-$(document).keyup(function(event){
-    if (game.currentState === states.stopped) {
-        if(event.keyCode == 13){
-            $(game.currentButton + '-btn').click();
-            event.preventDefault();
-        }
-    }
-});
-
-//Clicking the Win button
-$("#win-btn").click(function() {
-    game.reset();
-    $('#win').addClass('hidden')
-});
-
-//Clicking the Lose button
-$("#lose").click(function() {
-    game.reset();
-    $('#lose').addClass('hidden')
-    if (kills === 0 && game.currentState === states.running) {
-        //Play Seinfeld Theme when new game is started
-        game.sounds[5].currentTime = 0;
-        game.sounds[5].volume = 0.25;
-        game.controlSounds(5);
-    }
-});
-
-
-//Clicking the Start Game button
-$("#start-btn").click(function() {
-    game.currentState = states.running;
-    $('#start-game').addClass('hidden');
-    game.sounds[5].play();
-    game.sounds[5].volume = 0.25;
-    game.reset();
-});
-
-//Press Enter to activate Start Game button
-$(document).keyup(function(event){
-    if (game.currentState === states.stopped) {
-        if(event.keyCode == 13){
-            $('#start-btn').click();
-            event.preventDefault();
-        }
-    }
-});
-
-
 Game.prototype.showButton = function(button) {
-    this.currentState = states.stopped;
+    this.currentState = state.stopped;
     this.currentButton = button;
     $(this.currentButton).removeClass('hidden')
 }
 
-
 Game.prototype.updateScore = function() {
-    if (win === true) {
-        score = score + (level * 50) + timeNow;
-        level += 1;
-        win = false;
+    if (state.win) {
+        state.score = state.score + (state.level * 50) + state.timeNow;
+        state.level += 1;
+        state.win = false;
         allEnemies.forEach(function(enemy) {
             enemy.speedRange[0] = (enemy.speedRange[0] + 20);
             enemy.speedRange[1] = (enemy.speedRange[1] + 30);
         })
     }
-    if (kills > 2) {
-        if (score > highScore) {
-            highScore = score;
+    if (state.kills > 2) {
+        if (state.score > state.highScore) {
+            state.highScore = state.score;
         }
-        score = 0;
-        level = 1;
-        kills = 0;
+        state.score = 0;
+        state.level = 1;
+        state.kills = 0;
         allEnemies.forEach(function(enemy) {
             enemy.speedRange[0] = 50;
             enemy.speedRange[1] = 300;
@@ -414,21 +342,21 @@ Game.prototype.updateScore = function() {
 
 Game.prototype.renderScore = function() {
     this.updateScore();
-    var scoreText = score.toString();
+    let scoreText = state.score.toString();
     $('.score-num').text(scoreText);
-    var levelText = level.toString();
+    let levelText = state.level.toString();
     $('.level-num').text(levelText);
-    var highScoreText = highScore.toString();
+    let highScoreText = state.highScore.toString();
     $('.high-score-num').text(highScoreText);
 }
 
 Game.prototype.update = function() {
-    var bonus = 0;
-    if (gem.y === (player.y - 68) && hit === false) {
+    let bonus = 0;
+    if (gem.y === (player.y - 68) && !state.hit) {
         if (gem.x >= player.x - 19 && gem.x <= player.x + 19) {
             if (gem.image === 'images/Star.png') {
                 bonus = 100;
-                invincible = true;
+                state.invincible = true;
                 //Play Power Up Audio
                 game.controlSounds(9);
                 player.sprite = 'images/george_hair_glow.png';
@@ -438,7 +366,7 @@ Game.prototype.update = function() {
                 game.controlSounds(10);
                 //Pause Seinfeld Theme
                 game.sounds[5].pause();
-                themePaused = true;
+                state.themePaused = true;
             }
             else if (gem.image === 'images/Gem Green.png') {
                 bonus = 50;
@@ -449,31 +377,31 @@ Game.prototype.update = function() {
                 game.controlSounds(6);
             }
             else if (gem.image === 'images/Heart.png') {
-                if (kills === 0) {
+                if (state.kills === 0) {
                     bonus = 200;
                     game.controlSounds(6);
                 }
-                else if (kills === 1) {
+                else if (state.kills === 1) {
                     $('#heart3').removeClass('hidden');
-                    kills = 0;
+                    state.kills = 0;
                     game.controlSounds(7);
                 }
-                else if (kills === 2) {
+                else if (state.kills === 2) {
                     $('#heart2').removeClass('hidden');
-                    kills = 1;
+                    state.kills = 1;
                     game.controlSounds(7);
                 }
             }
-            score = score + bonus;
+            state.score += bonus;
             //Make gem disappear
             gem.x = 600;
             this.renderScore();
         }
     }
-    //Make Invincible George flash every 1 second
-    if (initiateStarPower && invincible) {
-        initiateStarPower = false;
-        starInterval = window.setInterval(switchImage, 300);
+    //Make Invincible George flash
+    if (state.initiateStarPower && state.invincible) {
+        state.initiateStarPower = false;
+        state.starInterval = window.setInterval(switchImage, 300);
         function switchImage() {
             if (player.sprite === 'images/george_hair_glow.png') {
                 player.sprite = 'images/george_hair.png';
@@ -485,49 +413,46 @@ Game.prototype.update = function() {
     }
 }
 
-
 Game.prototype.updateTime = function() {
-    if (countdown === true) {
-        timer = setInterval(function(){myTimer()}, 1000);
-        timeNow = this.startTime;
+    if (state.countdown) {
+        state.timer = setInterval(function(){myTimer()}, 1000);
+        state.timeNow = this.startTime;
         function myTimer() {
-            if (timeNow > 1) {
-                timeNow -= 1;
-                var timeText = timeNow.toString();
+            if (state.timeNow > 1) {
+                state.timeNow -= 1;
+                let timeText = state.timeNow.toString();
                 $('.time-num').text(timeText);
-                if (timeNow === 3) {
+                if (state.timeNow === 3) {
                     //Play Hurry Up Audio
                     game.controlSounds(8);
                 }
             }
             else {
                 game.killed();
-                countdown = false;
-                timeNow = this.startTime;
+                state.countdown = false;
+                state.timeNow = this.startTime;
             }
         }
     }
 }
 
-
 Game.prototype.killed = function() {
-    clearInterval(timer);
-    clearInterval(starInterval);
+    clearInterval(state.timer);
+    clearInterval(state.starInterval);
     allEnemies.forEach(function(enemy) {
         enemy.speed = 0;
     })
     player.sprite = 'images/costanza_scared.png';
     game.showButton('#lose');
-
-    kills += 1;
-    if (kills === 1) {
+    state.kills += 1;
+    if (state.kills === 1) {
         $('#heart3').addClass('hidden');
         $('#second-kill').addClass('hidden');
         $('#third-kill').addClass('hidden');
         //Play George Upset Audio
         game.controlSounds(0);
     }
-    else if (kills === 2) {
+    else if (state.kills === 2) {
         $('#heart2').addClass('hidden');
         $('#first-kill').addClass('hidden');
         $('#second-kill').removeClass('hidden');
@@ -558,7 +483,7 @@ Game.prototype.killed = function() {
 }
 
 Game.prototype.controlSounds = function(n) {
-    if (muted === true) {
+    if (state.muted === true) {
         return;
     }
     else {
@@ -566,22 +491,68 @@ Game.prototype.controlSounds = function(n) {
     }
 }
 
-//Add Mute/Un-Mute button controls
-$("#mute").click(function() {
-    muted = true;
-    $("#mute").addClass('hidden');
-    $("#unmute").removeClass('hidden');
-    //Pause Seinfeld Theme
-    game.sounds[5].pause();
-    //Pause Star Power Audio
-    game.sounds[10].pause();
+//Clicking the Start Game button
+$('#start-btn').click(function() {
+    game.currentState = state.running;
+    $('#start-game').addClass('hidden');
+    game.sounds[5].play();
+    game.sounds[5].volume = 0.25;
+    game.reset();
 });
 
-$("#unmute").click(function() {
-    muted = false;
-    $("#unmute").addClass('hidden');
-    $("#mute").removeClass('hidden');
-    if (invincible === true) {
+//Clicking the Win button
+$('#win-btn').click(function() {
+    game.reset();
+    $('#win').addClass('hidden')
+});
+
+//Clicking the Lose button
+$('#lose').click(function() {
+    game.reset();
+    $('#lose').addClass('hidden')
+    if (state.kills === 0 && game.currentState === state.running) {
+        //Play Seinfeld Theme when new game is started
+        game.sounds[5].currentTime = 0;
+        game.sounds[5].volume = 0.25;
+        game.controlSounds(5);
+    }
+});
+
+$(document).keyup(function(event){
+    if(event.keyCode === 13){
+        //Press Enter to activate Start Game button
+        if (!state.started) {
+            $('#start-btn').click();
+            event.preventDefault();
+            state.started = true;
+        }
+        //Press Enter to activate Win/Lose buttons
+        else if (game.currentState === state.stopped) {
+            $(game.currentButton + '-btn').click();
+            event.preventDefault();
+        }
+    }
+});
+
+//Add Mute/Un-Mute button controls
+$('#mute').click(function() {
+    state.muted = true;
+    $('#mute').addClass('hidden');
+    $('#unmute').removeClass('hidden');
+    //Pause Star Power Audio
+    if (state.invincible) {
+        game.sounds[10].pause();
+    } else {
+        //Pause Seinfeld Theme
+        game.sounds[5].pause();
+    }
+});
+
+$('#unmute').click(function() {
+    state.muted = false;
+    $('#unmute').addClass('hidden');
+    $('#mute').removeClass('hidden');
+    if (state.invincible) {
         //Play Star Power Audio
         game.controlSounds(10);
     }
@@ -591,12 +562,66 @@ $("#unmute").click(function() {
     }
 });
 
+$('#up-btn').click(function() {
+    if (game.currentState === state.running) {
+        if (player.y > 100) {
+            player.checkForRock();
+            if (state.moveUp) {
+                player.y -= 83;
+                state.moveLeft = true;
+                state.moveRight = true;
+                state.moveDown = true;
+            }
+        }
+    }
+});
 
+$('#down-btn').click(function() {
+    if (game.currentState === state.running) {
+        if (player.y < 400) {
+            player.checkForRock();
+            if (state.moveDown) {
+                player.y += 83;
+                state.moveLeft = true;
+                state.moveRight = true;
+                state.moveUp = true;
+            }
+        }
+    }
+});
+
+$('#left-btn').click(function() {
+    if (game.currentState === state.running) {
+        if (player.x > 50) {
+            player.checkForRock();
+            if (state.moveLeft) {
+                player.x -= 100;
+                state.moveRight = true;
+                state.moveUp = true;
+                state.moveDown = true;
+            }
+        }
+    }
+});
+
+$('#right-btn').click(function() {
+    if (game.currentState === state.running) {
+        if (player.x < 400) {
+            player.checkForRock();
+            if (state.moveRight) {
+                player.x += 100;
+                state.moveLeft = true;
+                state.moveUp = true;
+                state.moveDown = true;
+            }
+        }
+    }
+});
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
+    const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
@@ -606,81 +631,13 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var frank = new Enemy();
-var estelle = new Enemy();
-var susan = new Enemy();
-var allEnemies = [frank, estelle, susan];
-
-var player = new Player();
-var gem = new Gems();
-
-var game = new Game();
-
-
-
-
-
-
-
-
-//NEW CODE FOR CONTROLS (APRIL 10, 2019)
-$('#up-btn').on('click', function() {
-    if (game.currentState === states.running) {
-        if (player.y > 100) {
-            player.checkMove();
-            if (moveUp === true) {
-                player.y -= 83;
-                moveLeft = true;
-                moveRight = true;
-                moveDown = true;
-            }
-        }
-    }
-});
-
-$('#down-btn').on('click', function() {
-    if (game.currentState === states.running) {
-        if (player.y < 400) {
-            player.checkMove();
-            if (moveDown === true) {
-                player.y += 83;
-                moveLeft = true;
-                moveRight = true;
-                moveUp = true;
-            }
-        }
-    }
-});
-
-$('#left-btn').on('click', function() {
-    if (game.currentState === states.running) {
-        if (player.x > 50) {
-            player.checkMove();
-            if (moveLeft === true) {
-                player.x -= 100;
-                moveRight = true;
-                moveUp = true;
-                moveDown = true;
-            }
-        }
-    }
-});
-
-$('#right-btn').on('click', function() {
-    if (game.currentState === states.running) {
-        if (player.x < 400) {
-            player.checkMove();
-            if (moveRight === true) {
-                player.x += 100;
-                moveLeft = true;
-                moveUp = true;
-                moveDown = true;
-            }
-        }
-    }
-});
+const frank = new Enemy();
+const estelle = new Enemy();
+const susan = new Enemy();
+const allEnemies = [frank, estelle, susan];
+const player = new Player();
+const gem = new Gems();
+const game = new Game();
