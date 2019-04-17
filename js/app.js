@@ -1,22 +1,22 @@
 const state = {
-    started: false,
+    running: 0,
+    stopped: 1,
     countdown: undefined,
     timer: undefined,
     timeNow: undefined,
-    kills: 0,
+    started: false,
     score: 0,
     level: 1,
     highScore: 0,
+    kills: 0,
     killBonus: 0,
     win: false,
-    muted: false,
     invincible: false,
-    themePaused: false,
     hit: false,
+    muted: false,
+    themePaused: false,
     initiateStarPower: true,
     starInterval: undefined,
-    running: 0,
-    stopped: 1,
     moveLeft: true,
     moveRight: true,
     moveUp: true,
@@ -491,6 +491,20 @@ Game.prototype.controlSounds = function(n) {
     }
 }
 
+Game.prototype.handleInput = function(key) {
+    if (key === 'enter') {
+        //Press Enter to activate Start Game button
+        if (!state.started) {
+            $('#start-btn').click();
+            state.started = true;
+        }
+        //Press Enter to activate Win/Lose buttons
+        else if (this.currentState === state.stopped) {
+            $(this.currentButton + '-btn').click();
+        }
+    }
+}
+
 //Clicking the Start Game button
 $('#start-btn').click(function() {
     game.currentState = state.running;
@@ -515,22 +529,6 @@ $('#lose').click(function() {
         game.sounds[5].currentTime = 0;
         game.sounds[5].volume = 0.25;
         game.controlSounds(5);
-    }
-});
-
-$(document).keyup(function(event){
-    if(event.keyCode === 13){
-        //Press Enter to activate Start Game button
-        if (!state.started) {
-            $('#start-btn').click();
-            event.preventDefault();
-            state.started = true;
-        }
-        //Press Enter to activate Win/Lose buttons
-        else if (game.currentState === state.stopped) {
-            $(game.currentButton + '-btn').click();
-            event.preventDefault();
-        }
     }
 });
 
@@ -618,10 +616,10 @@ $('#right-btn').click(function() {
     }
 });
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+// This listens for key presses
+$(document).keyup(function(e){
     const allowedKeys = {
+        13: 'enter',
         37: 'left',
         38: 'up',
         39: 'right',
@@ -629,6 +627,7 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    game.handleInput(allowedKeys[e.keyCode]);
 });
 
 // Now instantiate your objects.
