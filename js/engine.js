@@ -186,7 +186,13 @@ var Engine = (function(global) {
         'images/Gem Green.png',
         'images/Star.png',
         'images/george_hair.png',
-        'images/george_hair_glow.png'
+        'images/george_hair_glow.png',
+        'images/jerry.png',
+        'images/jerry_glow.png',
+        'images/kramer.png',
+        'images/kramer_glow.png',
+        'images/elaine.png',
+        'images/elaine_glow.png'
     ]);
     Resources.onReady(init);
 

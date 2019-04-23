@@ -16,7 +16,9 @@ const state = {
     muted: false,
     themePaused: false,
     initiateStarPower: true,
+    friend: false,
     starInterval: undefined,
+    friendInterval: undefined,
     moveLeft: true,
     moveRight: true,
     moveUp: true,
@@ -129,6 +131,7 @@ Player.prototype.update = function() {
             state.initiateStarPower = true;
             clearInterval(state.starInterval);
         }
+        clearInterval(state.friendInterval);
     }
     this.checkCollison();
 }
@@ -225,8 +228,9 @@ const Gems = function() {
     this.sprite = [
         'images/Heart.png',
         'images/Rock.png',
-        'images/Gem Blue.png',
-        'images/Gem Green.png',
+        'images/jerry.png',
+        'images/kramer.png',
+        'images/elaine.png',
         'images/Star.png'
     ];
     this.x_pos = [1, 101, 201, 301, 401];
@@ -238,6 +242,9 @@ Gems.prototype.reset = function() {
     this.x = this.getRandom(this.x_pos);
     this.y = this.getRandom(this.y_pos);
     this.image = this.getRandom(this.sprite);
+    if (this.image === 'images/jerry.png' || this.image === 'images/kramer.png' || this.image === 'images/elaine.png') {
+        state.friend = true;
+    }
 }
 
 Gems.prototype.getRandom = function (item) {
@@ -267,7 +274,14 @@ const Game = function() {
         new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_warning.wav'),
         new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_powerup.wav'),
         new Audio('http://www.gamethemesongs.com/uploads/audio/Super%20Mario%20Kart%20-%20Star%20Power.mp3'),
-        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_kick.wav')
+        new Audio('http://www.mariomayhem.com/downloads/sounds/super_mario_bros/smb_kick.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/hello3.mp3'),
+        new Audio('https://www.drodd.com/seinfeld-audio/lalala.mp3'),
+        new Audio('https://www.drodd.com/seinfeld-audio/idiot.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/yada1.mp3'),
+        new Audio('https://www.drodd.com/seinfeld-audio/giddy-up.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/yoyo_ma.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/oh_yeah.wav')
     ];
     //Replay Seinfeld Theme when ended
     this.sounds[5].addEventListener('ended', function() {
@@ -368,13 +382,24 @@ Game.prototype.update = function() {
                 game.sounds[5].pause();
                 state.themePaused = true;
             }
-            else if (gem.image === 'images/Gem Green.png') {
+            else if (gem.image === 'images/jerry.png' || gem.image === 'images/jerry_glow.png') {
+                bonus = 70;
+                game.controlSounds(6);
+                game.controlSounds(randomIntFromInterval(12, 13));
+                clearInterval(state.friendInterval);
+            }
+            else if (gem.image === 'images/elaine.png' || gem.image === 'images/elaine_glow.png') {
                 bonus = 50;
                 game.controlSounds(6);
+                game.sounds[14].currentTime = 1;
+                game.controlSounds(randomIntFromInterval(14, 15));
+                clearInterval(state.friendInterval);
             }
-            else if (gem.image === 'images/Gem Blue.png') {
-                bonus = 20;
+            else if (gem.image === 'images/kramer.png' || gem.image === 'images/kramer_glow.png') {
+                bonus = 30;
                 game.controlSounds(6);
+                game.controlSounds(randomIntFromInterval(16, 18));
+                clearInterval(state.friendInterval);
             }
             else if (gem.image === 'images/Heart.png') {
                 if (state.kills === 0) {
@@ -399,16 +424,45 @@ Game.prototype.update = function() {
         }
     }
     //Make Invincible George flash
+    function switchPlayerImage(image1, image2) {
+        console.log("INSIDE SWITCH PLAYERIMAGE");
+        if (player.sprite === image1) {
+            player.sprite = image2;
+        }
+        else if (player.sprite === image2) {
+            player.sprite = image1;
+        }
+    }
     if (state.initiateStarPower && state.invincible) {
         state.initiateStarPower = false;
-        state.starInterval = window.setInterval(switchImage, 300);
-        function switchImage() {
-            if (player.sprite === 'images/george_hair_glow.png') {
-                player.sprite = 'images/george_hair.png';
-            }
-            else if (player.sprite === 'images/george_hair.png') {
-                player.sprite = 'images/george_hair_glow.png';
-            }
+        state.starInterval = window.setInterval(function() {
+            switchPlayerImage('images/george_hair_glow.png', 'images/george_hair.png')
+        }, 300);
+    }
+    //Make Friends Flash
+    function switchFriendImage(image1, image2) {
+        console.log("INSIDE SWITCH FRIEND IMAGE");
+        if (gem.image === image1) {
+            gem.image = image2;
+        } else if (gem.image === image2) {
+            gem.image = image1;
+        }
+    }
+    if (state.friend && state.started) {
+        console.log("INSIDE FRIEND");
+        state.friend = false;
+        if (gem.image === 'images/jerry.png') {
+            state.friendInterval = window.setInterval(function() {
+                switchFriendImage('images/jerry.png', 'images/jerry_glow.png')
+            }, 500);
+        } else if (gem.image === 'images/elaine.png') {
+            state.friendInterval = window.setInterval(function() {
+                switchFriendImage('images/elaine.png', 'images/elaine_glow.png')
+            }, 500);
+        } else if (gem.image === 'images/kramer.png') {
+            state.friendInterval = window.setInterval(function() {
+                switchFriendImage('images/kramer.png', 'images/kramer_glow.png')
+            }, 500);
         }
     }
 }
@@ -439,6 +493,7 @@ Game.prototype.updateTime = function() {
 Game.prototype.killed = function() {
     clearInterval(state.timer);
     clearInterval(state.starInterval);
+    clearInterval(state.friendInterval);
     allEnemies.forEach(function(enemy) {
         enemy.speed = 0;
     })
@@ -496,7 +551,7 @@ Game.prototype.handleInput = function(key) {
         //Press Enter to activate Start Game button
         if (!state.started) {
             $('#start-btn').click();
-            state.started = true;
+            //state.started = true;
         }
         //Press Enter to activate Win/Lose buttons
         else if (this.currentState === state.stopped) {
@@ -507,6 +562,7 @@ Game.prototype.handleInput = function(key) {
 
 //Clicking the Start Game button
 $('#start-btn').click(function() {
+    state.started = true;
     game.currentState = state.running;
     $('#start-game').addClass('hidden');
     game.sounds[5].play();
@@ -640,3 +696,7 @@ const allEnemies = [frank, estelle, susan];
 const player = new Player();
 const gem = new Gems();
 const game = new Game();
+
+function randomIntFromInterval(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
