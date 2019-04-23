@@ -2,12 +2,22 @@ html {
 	max-width: 550px;
 	margin: auto;
 }
+
 body {
-    text-align: center;
+	text-align: center;
 }
 
 .container {
 	max-width: 550px;
+}
+
+#info {
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+#sound-container {
+	z-index: 2;
 }
 
 canvas {
@@ -36,7 +46,7 @@ canvas {
 }
 
 #start-btn, #win-btn, #lose-btn {
-	font-size: 1.5em;
+	font-size: 1.5rem;
 	max-width: 350px;
 	white-space: normal;
 	padding-left: 10px;
@@ -51,6 +61,14 @@ canvas {
   -moz-animation: glowing 1500ms infinite;
   -o-animation: glowing 1500ms infinite;
   animation: glowing 1500ms infinite;
+}
+
+#third-kill {
+	font-size: 1rem;
+}
+
+#game-over {
+	font-size: 1.5rem;
 }
 
 #stats {
@@ -74,11 +92,11 @@ canvas {
 
 #high-score h2 {
 	text-align: left;
-	font-size: 1.25em;
+	font-size: 1.25rem;
 }
 
 #lives h2 {
-	font-size: 1.25em;
+	font-size: 1.25rem;
 }
 
 #level {
@@ -121,41 +139,6 @@ canvas {
 	font-size: 2rem;
 }
 
-@-webkit-keyframes glowing {
-  0% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
-  50% { background-color: #428542; -webkit-box-shadow: 0 0 40px #428542; }
-  100% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
-}
-
-@-moz-keyframes glowing {
-  0% { background-color: #5cb85c; -moz-box-shadow: 0 0 3px #5cb85c; }
-  50% { background-color: #428542; -moz-box-shadow: 0 0 40px #428542; }
-  100% { background-color: #5cb85c; -moz-box-shadow: 0 0 3px #5cb85c; }
-}
-
-@-o-keyframes glowing {
-  0% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
-  50% { background-color: #428542; box-shadow: 0 0 40px #428542; }
-  100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
-}
-
-@keyframes glowing {
-  0% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
-  50% { background-color: #428542; box-shadow: 0 0 40px #428542; }
-  100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
-}
-
-#sound-container {
-	z-index: 2;
-}
-
-#up-btn, #down-btn {
-	display: block;
-	margin: auto;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
 #left, #right, #center {
 	display: inline-block;
 }
@@ -165,10 +148,20 @@ canvas {
 	top: -31px;
 }
 
+#up-btn, #down-btn {
+	display: block;
+	margin: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.hidden {
+	display: none;
+}
 
 @media screen and (max-width: 500px) {
 	#high-score h2 {
-  	font-size: 1em;
+  	font-size: 1rem;
 	}
 
 	#lives h2 {
@@ -229,21 +222,26 @@ canvas {
 	}
 }
 
-#third-kill {
-	font-size: 1rem;
+@-webkit-keyframes glowing {
+  0% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; -webkit-box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; -webkit-box-shadow: 0 0 3px #5cb85c; }
 }
 
-#game-over {
-	font-size: 1.5rem;
+@-moz-keyframes glowing {
+  0% { background-color: #5cb85c; -moz-box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; -moz-box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; -moz-box-shadow: 0 0 3px #5cb85c; }
 }
 
-.hidden {
-	display: none;
+@-o-keyframes glowing {
+  0% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
 }
 
-
-
-#info {
-	padding-top: 20px;
-	padding-bottom: 10px;
+@keyframes glowing {
+  0% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
+  50% { background-color: #428542; box-shadow: 0 0 40px #428542; }
+  100% { background-color: #5cb85c; box-shadow: 0 0 3px #5cb85c; }
 }

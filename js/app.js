@@ -288,7 +288,7 @@ const Game = function() {
         this.currentTime = 0;
         this.play();
     }, false);
-    this.sounds[5].play();
+    //this.sounds[5].play();
 }
 
 Game.prototype.reset = function() {
@@ -425,7 +425,6 @@ Game.prototype.update = function() {
     }
     //Make Invincible George flash
     function switchPlayerImage(image1, image2) {
-        console.log("INSIDE SWITCH PLAYERIMAGE");
         if (player.sprite === image1) {
             player.sprite = image2;
         }
@@ -441,7 +440,6 @@ Game.prototype.update = function() {
     }
     //Make Friends Flash
     function switchFriendImage(image1, image2) {
-        console.log("INSIDE SWITCH FRIEND IMAGE");
         if (gem.image === image1) {
             gem.image = image2;
         } else if (gem.image === image2) {
@@ -449,7 +447,6 @@ Game.prototype.update = function() {
         }
     }
     if (state.friend && state.started) {
-        console.log("INSIDE FRIEND");
         state.friend = false;
         if (gem.image === 'images/jerry.png') {
             state.friendInterval = window.setInterval(function() {
@@ -551,7 +548,6 @@ Game.prototype.handleInput = function(key) {
         //Press Enter to activate Start Game button
         if (!state.started) {
             $('#start-btn').click();
-            //state.started = true;
         }
         //Press Enter to activate Win/Lose buttons
         else if (this.currentState === state.stopped) {
