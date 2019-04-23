@@ -1,5 +1,9 @@
 # Classic Arcade Game Clone Project
 
+My Seinfeld version of frogger using the Udacity "Classic Arcade Game" template
+
+### Play the game [here!](https://markfskinner.github.io/costanza-frogger-game/)
+
 ## Table of Contents
 
 - [Instructions](#instructions)
