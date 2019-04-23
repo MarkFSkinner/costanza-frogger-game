@@ -472,7 +472,7 @@ Game.prototype.updateTime = function() {
         state.timer = setInterval(function(){myTimer()}, 1000);
         state.timeNow = this.startTime;
         function myTimer() {
-            if (state.timeNow > 1) {
+            if (state.timeNow > 0) {
                 state.timeNow -= 1;
                 let timeText = state.timeNow.toString();
                 $('.time-num').text(timeText);
@@ -697,6 +697,6 @@ const player = new Player();
 const gem = new Gems();
 const game = new Game();
 
-function randomIntFromInterval(min,max) {
-    return Math.floor(Math.random()*(max-min+1)+min);
+function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
