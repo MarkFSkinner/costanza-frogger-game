@@ -4,7 +4,7 @@ My Seinfeld version of frogger using the Udacity "Classic Arcade Game" template
 
 ### Play the game [here!](https://markfskinner.github.io/costanza-frogger-game/)
 
-##How to play
+## How to play
 - Press "Enter" or click the large text button to start/continue the game
 - Use arrow keys or the arrow buttons to move George around
 - Get George to the water before time runs out
