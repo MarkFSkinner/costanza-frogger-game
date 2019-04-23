@@ -87,7 +87,8 @@ Enemy.prototype.getRandomSpeed = function() {
 // a handleInput() method.
 const Player = function() {
     this.reset();
-    this.winCount = 2;
+    this.winCount = 3;
+    this.whaleCount = 5;
 }
 
 Player.prototype.reset = function() {
@@ -103,17 +104,63 @@ Player.prototype.update = function() {
     }
     //What to do when player reaches the top
     if (this.y < 100) {
+        if (whale.x >= player.x - 19 && whale.x <= player.x + 19) {
+            state.score += 500;
+            game.renderScore();
+            whale.x = -150;
+            game.controlSounds(6);
+            //Alternate whale audio & play every 5th time
+            if (this.whaleCount === 5) {
+                game.controlSounds(19);
+                setTimeout(function(){ endWhaleOneAudio() }, 2000);
+                function endWhaleOneAudio() {
+                    game.sounds[19].pause();
+                    game.sounds[19].currentTime = 17.5;
+                }
+            } else if (this.whaleCount === 10) {
+                game.controlSounds(19);
+                setTimeout(function(){ endWhaleTwoAudio() }, 2500);
+                function endWhaleTwoAudio() {
+                    game.sounds[19].pause();
+                    game.sounds[19].currentTime = 28.5;
+                }
+            } else if (this.whaleCount === 15) {
+                game.controlSounds(19);
+                setTimeout(function(){ endWhaleTwoAudio() }, 2000);
+                function endWhaleTwoAudio() {
+                    game.sounds[19].pause();
+                    game.sounds[19].currentTime = 52.5;
+                }
+            } else if (this.whaleCount === 20) {
+                game.controlSounds(19);
+                setTimeout(function(){ endWhaleTwoAudio() }, 2000);
+                function endWhaleTwoAudio() {
+                    game.sounds[19].pause();
+                    game.sounds[19].currentTime = 63.5;
+                }
+            } else if (this.whaleCount === 25) {
+                game.controlSounds(19);
+                setTimeout(function(){ endWhaleThreeAudio() }, 2000);
+                function endWhaleThreeAudio() {
+                    game.sounds[19].pause();
+                    game.sounds[19].currentTime = 0;
+                }
+                this.whaleCount = 0;
+            }
+            this.whaleCount++;
+        }
+        //Only play Summer of George audio the first time, then every 3rd time
+        else {
+            if (this.winCount % 3 === 0) {
+                game.sounds[3].currentTime = 2;
+                game.controlSounds(3);
+            }
+            this.winCount++;
+        }
         allEnemies.forEach(function(enemy) {
             enemy.speed = 0;
         })
         game.showButton('#win');
-        //Only play win audio the first time, then every 3rd time
-        this.winCount += 1;
-        if (this.winCount % 3 === 0) {
-            //Play Summer of George Audio
-            game.sounds[3].currentTime = 2;
-            game.controlSounds(3);
-        }
         state.win = true;
         //Reset timer
         clearInterval(state.timer);
@@ -224,6 +271,30 @@ Player.prototype.checkForRock = function() {
     }
 }
 
+const Whale = function() {
+    this.sprite = 'images/Whale.png';
+    this.x_pos = [1, 101, 201, 301, 401];
+    this.y = 50;
+    this.reset();
+}
+
+Whale.prototype.reset = function() {
+    this.x = this.getRandom(this.x_pos);
+    //this.y = this.y_pos;
+    //this.image = this.sprite;
+}
+
+Whale.prototype.getRandom = function (item) {
+    return item[Math.floor(Math.random() * item.length)];
+}
+
+Whale.prototype.render = function() {
+    if (game.currentState !== state.running) {
+        return;
+    }
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 const Gems = function() {
     this.sprite = [
         'images/Heart_Marisa_Tomei.png',
@@ -281,7 +352,8 @@ const Game = function() {
         new Audio('https://www.drodd.com/seinfeld-audio/yada1.mp3'),
         new Audio('https://www.drodd.com/seinfeld-audio/giddy-up.wav'),
         new Audio('https://www.drodd.com/seinfeld-audio/yoyo_ma.wav'),
-        new Audio('https://www.drodd.com/seinfeld-audio/oh_yeah.wav')
+        new Audio('https://www.drodd.com/seinfeld-audio/oh_yeah.wav'),
+        new Audio('https://www.drodd.com/seinfeld-audio/marine_biologist2.mp3')
     ];
     //Replay Seinfeld Theme when ended
     this.sounds[5].addEventListener('ended', function() {
@@ -298,6 +370,7 @@ Game.prototype.reset = function() {
         enemy.reset();
     })
     gem.reset();
+    whale.reset();
     this.currentState = state.running;
     this.renderScore();
     this.updateTime();
@@ -351,6 +424,8 @@ Game.prototype.updateScore = function() {
             enemy.speedRange[0] = 50;
             enemy.speedRange[1] = 300;
         })
+        player.whaleCount = 5;
+        game.sounds[19].currentTime = 0;
     }
 }
 
@@ -691,6 +766,7 @@ const susan = new Enemy();
 const allEnemies = [frank, estelle, susan];
 const player = new Player();
 const gem = new Gems();
+const whale = new Whale();
 const game = new Game();
 
 function randomIntFromInterval(min, max) {

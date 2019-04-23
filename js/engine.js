@@ -157,6 +157,8 @@ var Engine = (function(global) {
         player.render();
 
         gem.render();
+
+        whale.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -190,7 +192,8 @@ var Engine = (function(global) {
         'images/kramer_glow.png',
         'images/Heart_Marisa_Tomei.png',
         'images/Rock_Lloyd_Braun.png',
-        'images/Star_Hair.png'
+        'images/Star_Hair.png',
+        'images/Whale.png'
     ]);
     Resources.onReady(init);
 
