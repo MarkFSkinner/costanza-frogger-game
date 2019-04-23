@@ -204,7 +204,7 @@ Player.prototype.handleInput = function(key) {
 }
 
 Player.prototype.checkForRock = function() {
-    if (gem.image === 'images/Rock.png') {
+    if (gem.image === 'images/Rock_Lloyd_Braun.png') {
         if (gem.y === this.y - 68) {
             if (gem.x === this.x - 119) {
                 state.moveLeft = false;
@@ -226,12 +226,12 @@ Player.prototype.checkForRock = function() {
 
 const Gems = function() {
     this.sprite = [
-        'images/Heart.png',
-        'images/Rock.png',
+        'images/Heart_Marisa_Tomei.png',
+        'images/Rock_Lloyd_Braun.png',
         'images/jerry.png',
         'images/kramer.png',
         'images/elaine.png',
-        'images/Star.png'
+        'images/Star_Hair.png'
     ];
     this.x_pos = [1, 101, 201, 301, 401];
     this.y_pos = [68, 151, 234];
@@ -368,7 +368,7 @@ Game.prototype.update = function() {
     let bonus = 0;
     if (gem.y === (player.y - 68) && !state.hit) {
         if (gem.x >= player.x - 19 && gem.x <= player.x + 19) {
-            if (gem.image === 'images/Star.png') {
+            if (gem.image === 'images/Star_Hair.png') {
                 bonus = 100;
                 state.invincible = true;
                 //Play Power Up Audio
@@ -401,7 +401,7 @@ Game.prototype.update = function() {
                 game.controlSounds(randomIntFromInterval(16, 18));
                 clearInterval(state.friendInterval);
             }
-            else if (gem.image === 'images/Heart.png') {
+            else if (gem.image === 'images/Heart_Marisa_Tomei.png') {
                 if (state.kills === 0) {
                     bonus = 200;
                     game.controlSounds(6);

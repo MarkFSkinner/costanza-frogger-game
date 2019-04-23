@@ -192,7 +192,10 @@ var Engine = (function(global) {
         'images/kramer.png',
         'images/kramer_glow.png',
         'images/elaine.png',
-        'images/elaine_glow.png'
+        'images/elaine_glow.png',
+        'images/Heart_Marisa_Tomei.png',
+        'images/Rock_Lloyd_Braun.png',
+        'images/Star_Hair.png'
     ]);
     Resources.onReady(init);
 
