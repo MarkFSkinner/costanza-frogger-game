@@ -4,11 +4,13 @@ My Seinfeld version of frogger using the Udacity "Classic Arcade Game" template
 
 ### Play the game [here!](https://markfskinner.github.io/costanza-frogger-game/)
 
+### Best played with SOUND ON!
+
 ## How to play
 - Press "Enter" or click the large text button to start/continue the game
 - Use arrow keys or the arrow buttons to move George around
 - Get George to the water before time runs out
-- Become a marine biologist & save the whale for extra points!
+- Become a "Marine Biologist" & save the whale for extra points!
 - Avoid "enemies" (family members)
 - Collect bonus points from friends
 - Activate "Star Power" & earn points by killing enemies
