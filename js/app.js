@@ -88,7 +88,7 @@ Enemy.prototype.getRandomSpeed = function() {
 const Player = function() {
     this.reset();
     this.winCount = 3;
-    this.whaleCount = 5;
+    this.whaleCount = 4;
 }
 
 Player.prototype.reset = function() {
@@ -110,41 +110,51 @@ Player.prototype.update = function() {
             whale.x = -150;
             game.controlSounds(6);
             //Alternate whale audio & play every 5th time
-            if (this.whaleCount === 5) {
+            if (this.whaleCount === 4) {
                 game.controlSounds(19);
                 setTimeout(function(){ endWhaleOneAudio() }, 2000);
                 function endWhaleOneAudio() {
                     game.sounds[19].pause();
                     game.sounds[19].currentTime = 17.5;
                 }
-            } else if (this.whaleCount === 10) {
+            } else if (this.whaleCount === 8) {
+                game.controlSounds(19);
+                setTimeout(function(){ endWhaleTwoAudio() }, 2500);
+                function endWhaleTwoAudio() {
+                    game.sounds[19].pause();
+                    game.sounds[19].currentTime = 21;
+                }
+            } else if (this.whaleCount === 12) {
                 game.controlSounds(19);
                 setTimeout(function(){ endWhaleTwoAudio() }, 2500);
                 function endWhaleTwoAudio() {
                     game.sounds[19].pause();
                     game.sounds[19].currentTime = 28.5;
                 }
-            } else if (this.whaleCount === 15) {
+            } else if (this.whaleCount === 16) {
                 game.controlSounds(19);
-                setTimeout(function(){ endWhaleTwoAudio() }, 2000);
-                function endWhaleTwoAudio() {
+                setTimeout(function(){ endWhaleThreeAudio() }, 2000);
+                function endWhaleThreeAudio() {
                     game.sounds[19].pause();
                     game.sounds[19].currentTime = 52.5;
                 }
             } else if (this.whaleCount === 20) {
                 game.controlSounds(19);
-                setTimeout(function(){ endWhaleTwoAudio() }, 2000);
-                function endWhaleTwoAudio() {
+                setTimeout(function(){ endWhaleFourAudio() }, 2000);
+                function endWhaleFourAudio() {
                     game.sounds[19].pause();
                     game.sounds[19].currentTime = 63.5;
                 }
-            } else if (this.whaleCount === 25) {
+            } else if (this.whaleCount === 24) {
                 game.controlSounds(19);
-                setTimeout(function(){ endWhaleThreeAudio() }, 2000);
-                function endWhaleThreeAudio() {
+                setTimeout(function(){ endWhaleFiveAudio() }, 2000);
+                function endWhaleFiveAudio() {
                     game.sounds[19].pause();
                     game.sounds[19].currentTime = 0;
                 }
+            } else if (this.whaleCount === 28) {
+                game.sounds[20].currentTime = 20;
+                game.controlSounds(20);
                 this.whaleCount = 0;
             }
             this.whaleCount++;
@@ -353,7 +363,8 @@ const Game = function() {
         new Audio('https://www.drodd.com/seinfeld-audio/giddy-up.wav'),
         new Audio('https://www.drodd.com/seinfeld-audio/yoyo_ma.wav'),
         new Audio('https://www.drodd.com/seinfeld-audio/oh_yeah.wav'),
-        new Audio('https://www.drodd.com/seinfeld-audio/marine_biologist2.mp3')
+        new Audio('https://www.drodd.com/seinfeld-audio/marine_biologist2.mp3'),
+        new Audio('https://www.drodd.com/seinfeld-audio/marine_biologist1.mp3')
     ];
     //Replay Seinfeld Theme when ended
     this.sounds[5].addEventListener('ended', function() {
@@ -424,7 +435,7 @@ Game.prototype.updateScore = function() {
             enemy.speedRange[0] = 50;
             enemy.speedRange[1] = 300;
         })
-        player.whaleCount = 5;
+        player.whaleCount = 4;
         game.sounds[19].currentTime = 0;
     }
 }
