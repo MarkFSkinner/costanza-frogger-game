@@ -22,7 +22,8 @@ const state = {
     moveLeft: true,
     moveRight: true,
     moveUp: true,
-    moveDown: true
+    moveDown: true,
+    doubleTouchStartTimestamp: 0
 }
 
 // Enemies our player must avoid
@@ -752,6 +753,15 @@ $('#right-btn').click(function() {
             }
         }
     }
+});
+
+//Prevent zoom when buttons are double clicked on mobile
+$(document).bind('touchstart', function(e){
+    let now = +(new Date());
+    if (state.doubleTouchStartTimestamp + 500 > now){
+        e.preventDefault();
+    };
+    state.doubleTouchStartTimestamp = now;
 });
 
 // This listens for key presses
