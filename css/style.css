@@ -5,6 +5,7 @@ html {
 
 body {
 	text-align: center;
+	touch-action: manipulation;
 }
 
 .container {

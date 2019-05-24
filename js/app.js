@@ -756,13 +756,13 @@ $('#right-btn').click(function() {
 });
 
 //Prevent zoom when buttons are double clicked on mobile
-$(document).bind('touchstart', function(e){
+/*$(document).bind('touchstart', function(e){
     let now = +(new Date());
     if (state.doubleTouchStartTimestamp + 500 > now){
         e.preventDefault();
     };
     state.doubleTouchStartTimestamp = now;
-});
+});*/
 
 // This listens for key presses
 $(document).keyup(function(e){
